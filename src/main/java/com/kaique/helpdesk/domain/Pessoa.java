@@ -4,6 +4,7 @@ package com.kaique.helpdesk.domain;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import com.kaique.helpdesk.domain.enums.Perfil;
 
 public abstract class Pessoa {
@@ -21,6 +22,9 @@ public abstract class Pessoa {
 	public Pessoa() {
 		super();
 		// TODO Auto-generated constructor stub
+		perfis = addPerfil(perfis, "CLIENTE");
+		
+		
 	}
 
 	
@@ -36,6 +40,18 @@ public abstract class Pessoa {
 
 
 	
+	
+
+	public Set<Perfil> getPerfis() {
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+	}
+
+
+	public void addPerfil(Set<Perfil> perfil) {
+		//Deu pau não entendi o porquê...
+		this.perfis.add(perfis.getCodigo());
+	}
+
 
 	public int getId() {
 		return id;
