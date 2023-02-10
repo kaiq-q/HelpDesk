@@ -1,28 +1,51 @@
 package com.kaique.helpdesk.domain;
 
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kaique.helpdesk.domain.enums.Perfil;
 
-public abstract class Pessoa {
-
+@Entity
+public abstract class Pessoa implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int id;
 	protected String nome;
+	
+	@Column(unique = true)
 	protected String CPF;
+	
+	@Column(unique = true)
 	protected String email;
 	protected String senha;
 	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "Perfis")
 	protected Set<Integer> perfis = new HashSet<>();
 	
+	@JsonFormat(pattern = "dd/MM/yyy")
 	LocalDate dataCriacao = LocalDate.now();
 
 	public Pessoa() {
 		super();
 		// TODO Auto-generated constructor stub
-		perfis = addPerfil(perfis, "CLIENTE");
+		addPerfil(Perfil.CLIENTE);
 		
 		
 	}
@@ -36,6 +59,9 @@ public abstract class Pessoa {
 		this.email = email;
 		this.senha = senha;
 		this.dataCriacao = dataCriacao;
+		
+		addPerfil(Perfil.CLIENTE);
+		
 	}
 
 
@@ -47,9 +73,10 @@ public abstract class Pessoa {
 	}
 
 
-	public void addPerfil(Set<Perfil> perfil) {
-		//Deu pau não entendi o porquê...
-		this.perfis.add(perfis.getCodigo());
+	public void addPerfil(Perfil perfil) {
+		//this.perfis.add(perfis.getCodigo()); -- Não poderia passar uma lista mas sim um unico perfil. 
+		this.perfis.add(perfil.getCodigo());
+		
 	}
 
 

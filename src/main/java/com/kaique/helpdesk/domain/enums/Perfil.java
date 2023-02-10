@@ -2,7 +2,7 @@ package com.kaique.helpdesk.domain.enums;
 
 public enum Perfil {
 	
-	ABERTO(0, "ABERTO"), ANDAMENTO(1, "ANDAMENTO"), TECNICO(2, "ENCERRADO");
+	ADMIN(0, "ROLE_ADMIN"), CLIENTE(1, "ROLE_CLIENTE"), TECNICO(2, "ROLE_TECNICO");
 	
 	private Integer codigo;
 	private String description;
@@ -32,7 +32,7 @@ public enum Perfil {
 			}
 		}
 		
-		throw new IllegalArgumentException("Perfil Inválido");
+		throw new IllegalArgumentException("Status Inválido");
 		
 	}
 }
